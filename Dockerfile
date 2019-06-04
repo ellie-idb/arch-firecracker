@@ -26,9 +26,11 @@ RUN MAKEFLAGS="-j$(nproc)" makepkg --noconfirm --skippgpcheck -s
 RUN sudo pacman -S --noconfirm arch-install-scripts
 WORKDIR /
 
-VOLUME [ "/output", "/rootfs", "/script", "/config" ]
+VOLUME [ "/output", "/rootfs" ]
 
-ADD script /script
-ADD config /config
+RUN sudo mkdir /script
+WORKDIR /script
+RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/image.sh
+RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/provision.sh
 
 CMD [ "/bin/bash", "/script/image.sh" ]
