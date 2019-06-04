@@ -3,21 +3,21 @@ set -ex
 
 rm -rf /output/*
 
-cp /root/linux-source-$KERNEL_SOURCE_VERSION/vmlinux /output/vmlinux
-cp /root/linux-source-$KERNEL_SOURCE_VERSION/.config /output/config
+sudo cp /home/build/linux/trunk/pkg/linux-firecracker/boot/vmlinuz-linux-firecracker /output/vmlinuz
+sudo cp /home/build/linux/trunk/config /output/config
 
-truncate -s 1G /output/image.ext4
-mkfs.ext4 /output/image.ext4
+sudo truncate -s 1G /output/image.ext4
+sudo mkfs.ext4 /output/image.ext4
 
-mount /output/image.ext4 /rootfs
-debootstrap --include openssh-server,netplan.io,nano bionic /rootfs http://archive.ubuntu.com/ubuntu/
-mount --bind / /rootfs/mnt
+sudo mount /output/image.ext4 /rootfs
+sudo pacstrap /rootfs base base-devel 
+sudo mount --bind / /rootfs/mnt
 
-chroot /rootfs /bin/bash /mnt/script/provision.sh
+sudo chroot /rootfs /bin/bash /mnt/script/provision.sh
 
-umount /rootfs/mnt
-umount /rootfs
+sudo umount /rootfs/mnt
+sudo umount /rootfs
 
 cd /output
-tar czvf ubuntu-bionic.tar.gz image.ext4 vmlinux config
+# tar czvf image.ext4 vmlinux config
 cd /

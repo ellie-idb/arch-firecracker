@@ -1,20 +1,30 @@
-FROM ubuntu:bionic
+FROM archlinux/base
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV KERNEL_SOURCE_VERSION 4.15.0
+ENV KERNEL_SOURCE_VERSION 5.1.5
 
-WORKDIR /root
+ 
+RUN pacman -Sy && pacman --noconfirm -S asp base-devel pacman-contrib
 
-RUN apt-get update && apt-get install -y debootstrap build-essential kernel-package \
-  fakeroot linux-source-$KERNEL_SOURCE_VERSION bc kmod cpio flex cpio libncurses5-dev libelf-dev libssl-dev && \
-  tar xvf /usr/src/linux-source-$KERNEL_SOURCE_VERSION.tar.*
+RUN useradd --shell=/bin/false build && usermod -L build
+RUN echo "build ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN echo "root ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+USER build
+WORKDIR /home/build
+CMD /bin/bash -l 
+RUN sudo chown -R build:build /home/build
+RUN sudo chmod -R 777 /home/build
+WORKDIR /home/build/
+RUN asp update linux && asp checkout linux
+ADD config/kernel-config /home/build/linux/trunk/config
 
-ADD config/kernel-config /root/linux-source-$KERNEL_SOURCE_VERSION/.config
-
-WORKDIR /root/linux-source-$KERNEL_SOURCE_VERSION
-RUN yes '' | make oldconfig && \
-  make -j $(nproc) deb-pkg
-WORKDIR /root
+WORKDIR /home/build/linux/trunk
+RUN ls
+RUN sed -i '/#pkgbase=linux-custom/c\' PKGBUILD
+RUN sed -i '/pkgbase=linux/c\pkgbase=linux-firecracker' PKGBUILD
+RUN updpkgsums
+RUN MAKEFLAGS="-j$(nproc)" makepkg --noconfirm --skippgpcheck -s 
+RUN sudo pacman -S --noconfirm arch-install-scripts
+WORKDIR /
 
 VOLUME [ "/output", "/rootfs", "/script", "/config" ]
 
