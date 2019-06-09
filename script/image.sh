@@ -19,6 +19,3 @@ sudo arch-chroot /rootfs /mnt/script/provision.sh
 sudo umount /rootfs/mnt
 sudo umount /rootfs
 
-cd /output
-# tar czvf image.ext4 vmlinux config
-cd /

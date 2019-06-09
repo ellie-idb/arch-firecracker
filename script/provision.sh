@@ -1,9 +1,9 @@
 #! /bin/bash
 set -ex
 
-pacman -U /mnt/home/build/linux/trunk/linux*.tar.xz
+pacman --noconfirm -U /mnt/home/build/linux/trunk/linux*.tar.xz
 
-pacman -S dmd
+pacman --noconfirm -S dmd
 
 echo 'arch-firecracker' > /etc/hostname
 passwd -d root
@@ -13,3 +13,5 @@ cat <<EOF > /etc/systemd/system/serial-getty@ttyS0.service.d/autologin.conf
 ExecStart=
 ExecStart=-/sbin/agetty --autologin root -o '-p -- \\u' --keep-baud 115200,38400,9600 %I $TERM
 EOF
+
+exit
