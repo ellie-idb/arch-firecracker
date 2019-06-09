@@ -2,7 +2,6 @@ FROM archlinux/base
 
 ENV KERNEL_SOURCE_VERSION 5.1.5
 
- 
 RUN pacman -Sy && pacman --noconfirm -S asp base-devel pacman-contrib
 
 RUN useradd --shell=/bin/false build && usermod -L build
@@ -30,7 +29,10 @@ VOLUME [ "/output", "/rootfs" ]
 
 RUN sudo mkdir /script
 RUN sudo chmod -R 777 /script
+
+RUN echo "downloading latest archives from github"
 WORKDIR /script
+
 RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/image.sh
 RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/provision.sh
 
