@@ -13,7 +13,7 @@ sudo mount /output/image.ext4 /rootfs
 sudo pacstrap /rootfs base base-devel 
 sudo mount --bind / /rootfs/mnt
 
-sudo chmod +X /mnt/script/provision.sh
+sudo chmod +X /rootfs/mnt/script/provision.sh
 sudo arch-chroot /rootfs /mnt/script/provision.sh
 
 sudo umount /rootfs/mnt

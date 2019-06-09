@@ -36,4 +36,5 @@ WORKDIR /script
 RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/image.sh
 RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/provision.sh
 
+RUN echo "now run the second command"
 CMD [ "/bin/bash", "/script/image.sh" ]
