@@ -30,9 +30,9 @@ VOLUME [ "/output", "/rootfs" ]
 RUN sudo mkdir /script
 RUN sudo chmod -R 777 /script
 
-RUN echo "downloading latest archives from github"
 WORKDIR /script
 
+RUN echo "downloading latest archives from github"
 RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/image.sh
 RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/provision.sh
 
