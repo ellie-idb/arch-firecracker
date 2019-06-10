@@ -3,7 +3,10 @@ set -ex
 
 sudo rm -rf /output/*
 
+sudo chmod +x /script/*
 sudo cp /home/build/linux/trunk/pkg/linux-firecracker/boot/vmlinuz-linux-firecracker /output/vmlinuz
+
+sudo sh -c "/script/extract-vmlinux /output/vmlinuz > /output/vmlinux"
 sudo cp /home/build/linux/trunk/config /output/config
 
 sudo truncate -s 3G /output/image.ext4
