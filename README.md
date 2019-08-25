@@ -1,25 +1,15 @@
-# ubuntu-firecracker
+# arch-firecracker
 Docker container to build a linux kernel and ext4 rootfs compatible with [firecracker](https://github.com/firecracker-microvm/firecracker).
+
+Based on the wonderful work done by [bkleiner](https://github.com/bkleiner/ubuntu-firecracker), with significant changes in order to make it build Arch Linux's kernel.
 
 ## Usage
 Build the container:
 ```shell
-docker build -t ubuntu-firecracker .
+docker build -t arch-firecracker .
 ```
 
 Build the image:
 ```shell
-docker run --privileged -it --rm -v $(pwd)/output:/output ubuntu-firecracker
-```
-
-Start the image with firectl
-```shell
-# copy image and kernel
-cp output/vmlinux ubuntu-vmlinux
-cp output/image.ext4 ubuntu.ext4
-# resize image
-truncate -s 5G ubuntu.ext4
-resize2fs ubuntu.ext4
-#launch firecracker
-firectl --kernel=ubuntu-vmlinux --root-drive=ubuntu.ext4 --kernel-opts="init=/bin/systemd noapic reboot=k panic=1 pci=off nomodules console=ttyS0"
+docker run --privileged -it --rm -v $(pwd)/output:/output arch-firecracker
 ```
