@@ -1,6 +1,4 @@
-FROM archlinux/base
-
-ENV KERNEL_SOURCE_VERSION 5.1.5
+FROM archlinux/base:latest
 
 RUN pacman -Sy && pacman --noconfirm -S asp base-devel pacman-contrib
 
@@ -33,7 +31,6 @@ RUN sudo chmod -R 777 /script
 WORKDIR /script
 
 RUN echo " downloading latest scripts from github "
-RUN sudo curl -O https://raw.githubusercontent.com/torvalds/linux/master/scripts/extract-vmlinux
 RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/image.sh
 RUN sudo curl -O https://raw.githubusercontent.com/hatf0/arch-firecracker/master/script/provision.sh
 
